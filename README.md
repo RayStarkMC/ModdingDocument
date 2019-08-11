@@ -1,0 +1,3 @@
+# ModdingDocument
+
+このドキュメントはMinecraftのModdingに関するドキュメントです。
