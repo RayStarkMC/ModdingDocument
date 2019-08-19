@@ -10,7 +10,7 @@ Mod本体となるクラスに付与し、必要なメタデータを記入し�
 Mod同士を識別するためのID。ユニークなIDを指定する。  
 
 ### String name() default "";
-ユーザー向けのMod名
+ユーザーに周知するMod名
 
 ### String version() default "";
 Modのバージョンを指定する。
