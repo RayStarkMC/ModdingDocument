@@ -16,6 +16,112 @@ Itemクラスに紐づけされたRondomインスタンス。
 初期値は64。
 
 ### protected boolean bFull3D
+trueの場合、このアイテムを3Dで描画する。  
+ItemTool等ではtrueになっており、pngファイルを元に小さなブロック状で描画される。初期値false。
+
+### protected boolean hasSubtypes
+trueの場合、このアイテムクラスが複数のアイテムを表す。  
+1つのアイテムクラスで複数のアイテムを表す場合、trueとしなければならない。  
+ex. ItemDye
+
+### @SideOnly(Side.CLIENT) protected IIcon itemIcon
+アイテムのテクスチャ。  
+ゲーム開始時にregisterIcon()によって初期化される。このアイテムのアイコンが1つの場合はこの変数が利用されるが、複数のアイコンを使う場合は独自にIIconを保持しなければならない。　　
+ex. ItemDye
+
+### protected String iconString
+アイコンのリソース置き場を表す文字列を表す。  
+iconStringは全て小文字で<domain>:<テクスチャ名>とする。<domain>はMod毎にユニークな名前にする必要があるが、慣例としてModIDを指定する場合が多い。テクスチャはassets/<domain>/textures/items/下に配置し、ファイル名を<テクスチャ名>.pngとする。
+ex. iconString: "ateliermod:bandage"の時, assets/ateliermod/texture/items/bandage.png
+
+### final RegistryDelegate<Item> delegate
+このアイテムへの参照を保持する。
+
+## メソッド
+### static int getIdFromItem(Item item)
+引数のアイテムのIDを返す。
+
+### static Item getItemById(int id)
+引数のIDで登録されているアイテムを返す。
+
+### static Item getItemFromBlock(Block block)
+引数のブロックに対応するアイテムを返す。
+
+### static void registerItems()
+バニラアイテムをレジストリへ登録する。  
+Minecraft、及びMinecraftServer起動時に呼び出される。呼び出し不要。
+
+### Item setMaxStackSize(int maxStackSize)
+このアイテムの最大スタック数を設定する。
+
+### @SideOnly(Side.CLIENT) int getSpriteNumber()
+オーバーライド不要。
+
+### @SideOnly(Side.CLIENT) IIcon getIconFromDamage(int damage)
+ダメージ値に応じたアイコンを返す。
+
+### @SideOnly(Side.CLIENT) IIcon getIconIndex(ItemStack itemStack)
+スタックに応じたアイコンを返す。
+この実装ではgetIconFromDamage()を呼び出すが、オーバーライドすることでNBTに応じたIIconを返すことが出来る。
+
+### boolean onItemUse(ItemStack itemStack, EntityPlayer entityPlayer, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
+アイテムをブロックに対して右クリックした場合に呼ばれる。  
+何かを行った場合trueを返すことで、その後の処理を行わない。
+
+### float func_150893_a(ItemStack currentStack, Block block)
+利用されない。代わりにgetDigSpeed()を使う。
+引数のブロックに対する採掘速度を返す。
+
+### ItemStack onItemRightClick(ItemStack currentStack, World world, EntityPlayer entityPlayer)
+アイテムが右クリックされた場合に呼ばれる。  
+onItemUseFirst()やonItemUse()で何らかの処理が行われている場合は呼び出されない。  
+使用後のアイテムスタックを返す。
+
+### ItemStack onEaten(ItemStack currentStack, World world, EntityPlayer entityPlayer)
+このアイテムが食べられるときに呼ばれる。  
+引数のプレイヤーがこのアイテムを食べたときの処理を行う。  
+ex. ItemFood
+使用後のアイテムスタックを返す。
+
+### @Deprecated int getItemStackLimit()
+非推奨。代わりにgetItemStackLimit(ItemStack itemStack)を利用する。  
+このアイテムのスタック上限を返す。
+
+### int getMetadata(int metadata)
+引数のメタデータのアイテムスタックによりブロックが設置される際、そのブロックのメタデータを返す。
+
+### boolean getHasSubtypes()
+このアイテムが複数種のアイテムを表すならtrue。
+
+### Item setHasSubtypes(boolean hasSubtypes)
+このアイテムが複数種のアイテムを表すか設定する。　　
+このアイテム自身を返す。
+
+### int getMaxDamage()
+非推奨。代わりにgetMaxDamage(ItemStack itemStack)を使う。  
+このアイテムの最大ダメージ値を返す。
+
+### Item setMaxDamage(int maxDamage)
+非推奨。代わりにgetMaxDamage(ItemStack itemStack)をオーバーライドして最大ダメージ値を設定する。  
+このアイテムの最大ダメージ値を設定する。  
+このアイテム自身を返す。
+
+### boolean isDamageable()
+このアイテムが耐久値を持つならtrue。  
+初期の実装ではsetMaxDamageで設定された値を参照するため、バニラの耐久設定を利用しないのであればgetMaxDamage(ItemStack itemStack)の実装に合わせてオーバーライドする。
+
+### boolean hitEntity(ItemStack itemStack, EntityLivingBase target, EntityLivingBase player)
+targetに対して攻撃したときに呼び出される。  
+このアイテムでtargetに攻撃した際の処理を行う。  
+このアイテムでtargetに対し攻撃した場合に耐久値が減るならtrue。
+
+### boolean func_150897_b(Block block)
+このアイテムが引数のブロックの適正ツールか調べる。　　
+特定のブロックに対して適正ツールを設定したいときに使う。ForgeのToolClassAPIにより適正ツールを付与することもできる。
+
+### boolean itemInteractionForEntity(ItemStack p_111207_1_, EntityPlayer p_111207_2_, EntityLivingBase p_111207_3_)
+
+
 
 
 [ItemStack]:/ForgeBin/net/minecraft/item/ItemStack.md

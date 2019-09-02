@@ -31,8 +31,18 @@ getTagCompound()で取得可能。
 
 ### boolean tryPlaceItemIntoWorld(EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
 スタックの使用を試みる。  
-getItem().onItemUse()を呼び出す。
+getItem().onItemUse()を呼び出す。  
+何か行った場合はtrueを返す。
 
+### ItemStack useItemRightClick(World world, EntityPlayer entityPlayer)
+このスタックが右クリックされたときに呼ばれる。  
+[Item].onItemUseFirst()や[Item].onItemUse()で何も行われなかった場合に実行される。アイテムがブロックに対して何らかの動作を実行する場合、空中右クリックした場合のみ呼ばれる。  
+使用後のアイテムスタックを返す。
+
+### ItemStack onFoodEaten(World world, EntityPlayer entityPlayer)
+このスタックが食べられるときに呼ばれる。     
+アイテムクラスのonEaten()を呼び出す。  
+使用後のアイテムスタックを返す。
 
 ### int getMaxStackSize()
 自身のスタックの最大スタック数を返す。
