@@ -1,7 +1,7 @@
 # final class ItemStack
 ゲーム内におけるアイテムやブロックの塊を表すクラス。  
-保持しているアイテム、ダメージ値、NBTタグが一致する場合スタック同士を束ねることが出来る。
-ダメージ値やスタック数を負数に設定すると0となる。スタック数が0以下になった場合たいていの実装では破棄される。
+保持している[Item]、ダメージ値、NBTタグの3つのを中心としたデータを持ち、それらの振る舞いやユーティリティメソッドを提供する。プレイヤーやTilerEntityのインベントリ、レシピ実効時の見本、エンティティ等、様々な場面で利用される。ダメージ値やスタック数を負数に設定すると0となる。スタック数が0以下になった場合破棄されるが、こちらはItemStackを直接扱うメソッド側によってなされる。  
+ItemStackのメソッドの多くの動作は保持している[Item]クラスのメソッドの実装よって決定される。ItemStackがBlockの塊を表現する場合は[Item]クラスとしてItemBlockを継承したクラスを保持し、そのメソッドの動作の多くはBlockクラスのメソッドにより決定される。
 
 ## フィールド
 ### int stackSize
@@ -94,7 +94,7 @@ getItem().onBlockDestroyed()を呼び出す。
 対象のスタックと同じアイテムを保持しているか調べる。
 
 ### String getUnlocalizedName()
-langファイルによる翻訳前のアイテム名を取得する。
+アイテムのunlocalizedNameを取得する。
 
 ### static ItemStack copyItemStack(ItemStack targetStack)
 対象のスタックを複製する。
@@ -132,7 +132,7 @@ langファイルによる翻訳前のアイテム名を取得する。
 
 ### String getDisplayName()
 このスタックの表示名を取得する。  
-このスタックが表示名のNBTタグを持っている場合、表示名はそのタグの文字列になる。そうでない場合、表示名はItemのgetUnlocalizedName()をlangファイルにより翻訳した文字列になる。
+このスタックが表示名が金床等によって変えられている場合、そちらの名前を返す。そうでない場合、[Item]の名前を返す。このメソッドはlangファイルにItem名に対応する翻訳が記述されている場合、その名前を返す。
 
 ### ItemStack setStackDisplayName(String displayName)
 このスタックの表示名を変更する。
@@ -192,3 +192,5 @@ entityFrameがnullの場合はフレームに飾られている状態を解除�
 ### IChatComponent func_151000_E()
 このアイテムを表示するチャットコンポーネントを取得する。  
 ホバーイベントがSHOW_ITEMに設定されており、マウスホバーでアイテムのツールチップが表示される
+
+[Item]:/ForgeBin/net/minecraft/item/Item.md
