@@ -16,8 +16,8 @@ Itemクラスに紐づけされたRondomインスタンス。
 初期値は64。
 
 ### protected boolean bFull3D
-trueの場合、このアイテムを3Dで描画する。  
-ItemTool等ではtrueになっており、pngファイルを元に小さなブロック状で描画される。初期値false。
+trueの場合、このアイテムを3Dで描画する(?)。詳細不明。  
+ItemTool等ではtrueになっている。初期値false。
 
 ### protected boolean hasSubtypes
 trueの場合、このアイテムクラスが複数のアイテムを表す。  
@@ -113,13 +113,52 @@ ex. ItemFood
 ### boolean hitEntity(ItemStack itemStack, EntityLivingBase target, EntityLivingBase player)
 targetに対して攻撃したときに呼び出される。  
 このアイテムでtargetに攻撃した際の処理を行う。  
-このアイテムでtargetに対し攻撃した場合に耐久値が減るならtrue。
+return: このアイテムでtargetに対し攻撃した場合に耐久値が減るならtrue。
 
 ### boolean func_150897_b(Block block)
-このアイテムが引数のブロックの適正ツールか調べる。　　
-特定のブロックに対して適正ツールを設定したいときに使う。ForgeのToolClassAPIにより適正ツールを付与することもできる。
+このアイテムが引数のブロックの適正ツールか調べる。  
+特定のブロックに対して適正ツールを設定したいときに使う。ForgeのToolClassAPIのsetHarvestLevel()により適正ツール属性を付与することもできる。  
+return: このアイテムが引数のブロックの適正ツールならtrue
 
-### boolean itemInteractionForEntity(ItemStack p_111207_1_, EntityPlayer p_111207_2_, EntityLivingBase p_111207_3_)
+### boolean itemInteractionForEntity(ItemStack itemStack, EntityPlayer entityPlayer, EntityLivingBase target)
+このアイテムを持ってtargetを右クリックした際に呼ばれる。  
+targetに対して何らかの干渉をする処理を行う。  
+ex. ItemDye, ItemShares
+return: 何らかの動作を行った場合true
+
+### Item setFull3D()
+bFull3Dをtrueに設定する。　　
+return: このアイテム
+
+### @SideOnly(Side.CLIENT) public boolean isFull3D()
+このアイテムが手に持たれている時に3D描画するならtrue。
+
+### @SideOnly(Side.CLIENT) public boolean shouldRotateAroundWhenRendering()
+このアイテムを180°反転して描画するならtrue。
+
+### public Item setUnlocalizedName(String unlocalizedName)
+このアイテムの未翻訳名を設定する。  
+return: このアイテム
+
+### public String getUnlocalizedNameInefficiently(ItemStack itemStack)
+item.unlocalizedNameの翻訳を返す。  
+通常アイテムの翻訳はitem.unlocalizedName.nameに対して設定するため、このメソッドはunlocalizedNameを返す。
+
+### public String getUnlocalizedName()
+非推奨。代わりにpublic String getUnlocalizedName(ItemStack itemStack)を利用する。  
+このアイテムの未翻訳名を返す。  
+
+### public String getUnlocalizedName(ItemStack itemStack)
+このアイテムの未翻訳名を返す。　　
+メタデータやNBTの違いにより異なる未翻訳名を返すことが出来る。
+
+### public Item setContainerItem(Item containerItem)
+非推奨。代わりにpublic ItemStack getContainerItem(ItemStack itemStack)をOverrideする。  
+このアイテムの容器を設定する。  
+ex. バケツ
+
+### public boolean doesContainerItemLeaveCraftingGrid(ItemStack itemStack)
+trueの場合、このアイテムがクラフトで消費されたとき、容器がクラフトグリッドを離れる。
 
 
 
