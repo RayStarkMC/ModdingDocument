@@ -235,5 +235,6 @@ ownerがツールチップを表示する際に呼び出される。実装側で
 デフォルトの実装ではスタックサイズが1かつ耐久値を持つ場合にtrueを返す。
 
 ### protected MovingObjectPosition getMovingObjectPositionFromPlayer(World world, EntityPlayer player, boolean p_77621_3_)
+TODO 第三引数が何者か調べる。
 
 [ItemStack]:/ForgeBin/net/minecraft/item/ItemStack.md
