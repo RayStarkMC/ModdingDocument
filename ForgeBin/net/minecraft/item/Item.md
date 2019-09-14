@@ -54,14 +54,16 @@ Minecraft、及びMinecraftServer起動時に呼び出される。呼び出し�
 ### Item setMaxStackSize(int maxStackSize)
 このアイテムの最大スタック数を設定する。
 
-### @SideOnly(Side.CLIENT) int getSpriteNumber()
-オーバーライド不要。
+### @SideOnly(Side.CLIENT) public int getSpriteNumber()
+非推奨。オーバーライド不要。
 
-### @SideOnly(Side.CLIENT) IIcon getIconFromDamage(int damage)
+### @SideOnly(Side.CLIENT) public IIcon getIconFromDamage(int damage)
+非推奨。代わりにpublic IIcon getIconIndex(ItemStack itemStack)を利用する。
 ダメージ値に応じたアイコンを返す。
 
-### @SideOnly(Side.CLIENT) IIcon getIconIndex(ItemStack itemStack)
-スタックに応じたアイコンを返す。
+### @SideOnly(Side.CLIENT) public IIcon getIconIndex(ItemStack itemStack)
+このスタックのアイコンを返す。  
+このメソッドはrequiresMultipleRenderPasses()がfalseを返すときに呼ばれる。
 この実装ではgetIconFromDamage()を呼び出すが、オーバーライドすることでNBTに応じたIIconを返すことが出来る。
 
 ### boolean onItemUse(ItemStack itemStack, EntityPlayer entityPlayer, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
@@ -81,9 +83,9 @@ onItemUseFirst()やonItemUse()で何らかの処理が行われている場合�
 このアイテムが食べられるときに呼ばれる。  
 引数のプレイヤーがこのアイテムを食べたときの処理を行う。  
 ex. ItemFood
-使用後のアイテムスタックを返す。
+return: 使用後のアイテムスタック
 
-### @Deprecated int getItemStackLimit()
+### @Deprecated public int getItemStackLimit()
 非推奨。代わりにgetItemStackLimit(ItemStack itemStack)を利用する。  
 このアイテムのスタック上限を返す。
 
@@ -146,21 +148,92 @@ item.unlocalizedNameの翻訳を返す。
 
 ### public String getUnlocalizedName()
 非推奨。代わりにpublic String getUnlocalizedName(ItemStack itemStack)を利用する。  
-このアイテムの未翻訳名を返す。  
+return: このアイテムの未翻訳名  
 
 ### public String getUnlocalizedName(ItemStack itemStack)
 このアイテムの未翻訳名を返す。　　
 メタデータやNBTの違いにより異なる未翻訳名を返すことが出来る。
+return: このアイテムの未翻訳名
 
 ### public Item setContainerItem(Item containerItem)
 非推奨。代わりにpublic ItemStack getContainerItem(ItemStack itemStack)をOverrideする。  
 このアイテムの容器を設定する。  
-ex. バケツ
+ex. バケツ  
+return: このアイテム
 
 ### public boolean doesContainerItemLeaveCraftingGrid(ItemStack itemStack)
 trueの場合、このアイテムがクラフトで消費されたとき、容器がクラフトグリッドを離れる。
 
+### public boolean getShareTag()
+true、又はこのアイテムがダメージ値を持つ場合、NBT情報がクライアントとサーバーで同期される。  
+このアイテムの[ItemStack]をPacketBufferに書き込み際に呼ばれ、trueならばNBTデータを書き込むようになる。
 
+### public Item getContainerItem()
+非推奨。代わりにpublic ItemStack getContainerItem(ItemStack itemStack)を利用する。  
+return: このアイテムの容器
 
+### public boolean hasContainerItem()
+非推奨。代わりにpublic boolean hasContainerItem(ItemStack stack)を使う。
+return: このアイテムが容器を持つならばtrue
+
+### @SideOnly(Side.CLIENT) public int getColorFromItemStack(ItemStack stack, int renderPath)
+このアイテムの指定されたrenderPathにおけるRGB値を返す。  
+ex. 革防具各種
+return: このアイテムのRGB値
+
+### public void onUpdate(ItemStack itemStack, World world, Entity owner, int numSlot, boolean isHeld)
+ownerのインベントリにこのアイテムがある場合、クライアント側でtick毎に呼ばれる。  
+サーバーに影響を与える処理を行う場合は処理を行った後、その結果をサーバーと同期する必要がある。
+
+### public void onCreated(ItemStack createdStack, World world, EntityPlayer creater)
+このアイテムが作成されたときに呼ばれる。  
+このメソッドはサーバー、クライアント両側で呼ばれる。
+
+### public boolean isMap()
+このアイテムがItemMapBaseのサブクラスであればtrueを返す。
+
+### public EnumAction getItemUseAction(ItemStack itemStack)
+このアイテムが使用されたときのアクションを返す。  
+戻り値のアクションによって右クリック時の動作が変わる。
+
+### public int getMaxItemUseDuration(ItemStack itemStack)
+このアイテムを使用するのにかかるtick数を返す。
+
+### public void onPlayerStoppedUsing(ItemStack itemStack, World world, EntityPlayer user, int itemInUseCount)
+プレイヤーが右クリックによるアイテムの使用をやめたときに呼ばれる。
+
+### public Item setPotionEffect(String potionEffect)
+このアイテムがポーションの材料として利用されたときの効果を設定する。  
+エフェクトはPotonHelperを使って設定する。  
+return: このアイテム
+
+### public String getPotionEffect(ItemStack itemStack)
+このアイテムがのポーションの材料として利用されたときの効果を返す。
+
+### public boolean isPotionIngredient(ItemStack itemStack)
+このアイテムがポーションの材料であればtrueを返す。  
+getPotionEffectがnullでなければtrueを返す。
+
+### @SideOnly(Side.CLIENT) public void addInformation(ItemStack itemStack, EntityPlayer owner, List tooltipList, boolean isDebugMode)
+ツールチップに表示する文字列を設定する。  
+ownerがツールチップを表示する際に呼び出される。実装側ではtooltipListに1行ごとに表示する文字列を書き込む。
+
+### public String getItemStackDisplayName(ItemStack itemStack)
+このアイテムの表示名を返す。
+
+### @SideOnly(Side.CLIENT) @Deprecated public boolean hasEffect(ItemStack itemStack)
+非推奨。代わりにpublic boolean hasEffect(ItemStack itemStack, int pass)を使う。
+このアイテムがポーションエフェクトを持っているならtrueを返す。
+
+### public EnumRarity getRarity(ItemStack itemStack)
+このアイテムのレアリティを返す。  
+レアリティはアイテムを表示するときにのアイテム名の色等に利用される。
+
+### public boolean isItemTool(ItemStack itemStack)
+このアイテムがツールであればtrueを返す。  
+このアイテムがエンチャントを施すことが出来る場合、trueを返す必要がある。  
+デフォルトの実装ではスタックサイズが1かつ耐久値を持つ場合にtrueを返す。
+
+### protected MovingObjectPosition getMovingObjectPositionFromPlayer(World world, EntityPlayer player, boolean p_77621_3_)
 
 [ItemStack]:/ForgeBin/net/minecraft/item/ItemStack.md
