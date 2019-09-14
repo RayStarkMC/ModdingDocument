@@ -1,4 +1,4 @@
-# public class Ven3
+# public class Vec3
 3次元ベクトルを表すクラス。  
 各フィールドは公開されているため注意。
 
