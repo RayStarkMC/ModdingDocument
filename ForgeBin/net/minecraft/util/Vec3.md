@@ -90,3 +90,12 @@ return: intermediateZに基づく中間ベクトル、または生成できな�
 ### public String toString()
 このベクトルの文字列表現を返す。  
 return: このベクトルの文字列表現
+
+### public void rotateAroundX(float radRotation)
+このベクトルをX軸中心にradRotationだけ回転する。
+
+### public void rotateAroundY(float radRotation)
+このベクトルをY軸中心にradRotationだけ回転する。
+
+### public void rotateAroundZ(float radRotation)
+このベクトルをZ軸中心にradRotationだけ回転する。
