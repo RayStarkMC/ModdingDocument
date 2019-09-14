@@ -2,6 +2,7 @@
 ゲーム内における[ItemStack]の振る舞いを表現するクラス。  
 [ItemStack]が生成されるときに必ずItemクラスが参照され、[ItemStack]の各振る舞いはItemクラスのメソッドを参照する。Blockクラスに対してはこのクラスを継承したItemBlockクラスが対応している。
 
+
 ## フィールド
 ### static final RegistryNamespaced itemRegistry
 Minecraft本体のアイテムレジストリ。  
@@ -36,6 +37,7 @@ ex. iconString: "ateliermod:bandage"の時, assets/ateliermod/texture/items/band
 
 ### final RegistryDelegate<Item> delegate
 このアイテムへの参照を保持する。
+
 
 ## メソッド
 ### static int getIdFromItem(Item item)
