@@ -1,6 +1,5 @@
 # public class MathHelper
 数値計算のヘルパメソッドをまとめたユーティリティクラス。  
-sin, cosの高速取得や、各塩山の
 
 
 ## メソッド
