@@ -25,4 +25,4 @@
 
 [item]:/ForgeBin/net/minecraft/item/Item.md
 
-[getItemUseAction(ItemStack heldStack)]:/ForgeBin/net/minecraft/item/Item.md#public-enumaction-getitemuseactionitemstack-helditem
+[getItemUseAction(ItemStack heldStack)]:[Item]#public-enumaction-getitemuseactionitemstack-helditem
