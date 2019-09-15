@@ -194,7 +194,7 @@ ownerのインベントリにこのアイテムがある場合、クライアン
 ### public boolean isMap()
 このアイテムがItemMapBaseのサブクラスであればtrueを返す。
 
-### public EnumAction getItemUseAction(ItemStack itemStack)
+### public EnumAction getItemUseAction(ItemStack heldStack)
 このアイテムが使用されたときのアクションを返す。  
 戻り値のアクションによって右クリック時の動作が変わる。
 
