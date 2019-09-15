@@ -23,22 +23,24 @@ double型xの非負の平方根をfloat型で返す。
 return: xの非負の平方根
 
 ### public static int floor_float(float x)
-float型xについて、[x]をint型で返す。
+float型xについて、[x]をint型で返す。  
 return: [x]
 
 ### @SideOnly(Side.CLIENT) public static int truncateDoubleToInt(double x)
-xをInterger.MAX_VALUE-1024以下のint型にキャストして返す。
+xをInterger.MAX_VALUE-1024以下のint型にキャストして返す。  
 return: Integer.MAX_VALUE-1024以下のint型にキャストされたx
 
 ### public static int floor_double(double x)
-double型xについて、[x]をint型で返す。
+double型xについて、[x]をint型で返す。  
 return: [x]
 
 ### public static long floor_double_long(double x)
-double型xについて、[x]をlong型で返す。
+double型xについて、[x]をlong型で返す。  
+return: [x]
 
 ### @SideOnly(Side.CLIENT) public static int func_154353_e(double x)
-double型xについて、[x]の絶対値をint型で返す。
+double型xについて、[x]の絶対値をint型で返す。  
+return: [x]
 
 ### public static float abs(float x)
 float型xについて、|x|をfloat型で返す。  
