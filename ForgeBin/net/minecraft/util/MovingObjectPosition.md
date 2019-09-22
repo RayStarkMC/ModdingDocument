@@ -82,5 +82,5 @@ hitVecは**複製されない**。
 
 [Block]:/ForgeBin/net/minecraft/block/Block.md
 [Entity]:/ForgeBin/net/minecraft/entity/Entity.md
-[MovingObjectType]:/ForgeBin/net/minecraft/util/MovingObjectPosition#public-static-enum-movingobjectyype
+[MovingObjectType]:/ForgeBin/net/minecraft/util/MovingObjectPosition#public-static-enum-movingobjecttype
 [ForgeDirection]:/ForgeBin/net/minecraftforge/common/util/ForgeDirection.md
