@@ -1,10 +1,10 @@
-# class Item
+# pulic class Item
 ゲーム内における[ItemStack]の振る舞いを表現するクラス。  
 [ItemStack]が生成されるときに必ずItemクラスが参照され、[ItemStack]の各振る舞いはItemクラスのメソッドを参照する。Blockクラスに対してはこのクラスを継承したItemBlockクラスが対応している。
 
 
 ## フィールド
-### static final RegistryNamespaced itemRegistry
+### public static final RegistryNamespaced itemRegistry
 Minecraft本体のアイテムレジストリ。  
 基本的にForgeのGameRegistryを利用するため使用しない。
 
@@ -35,25 +35,25 @@ ex. ItemDye
 iconStringは全て小文字で<domain>:<テクスチャ名>とする。<domain>はMod毎にユニークな名前にする必要があるが、慣例としてModIDを指定する場合が多い。テクスチャはassets/<domain>/textures/items/下に配置し、ファイル名を<テクスチャ名>.pngとする。
 ex. iconString: "ateliermod:bandage"の時, assets/ateliermod/texture/items/bandage.png
 
-### final RegistryDelegate<Item> delegate
+### public final RegistryDelegate<Item> delegate
 このアイテムへの参照を保持する。
 
 
 ## メソッド
-### static int getIdFromItem(Item item)
+### public static int getIdFromItem(Item item)
 引数のアイテムのIDを返す。
 
-### static Item getItemById(int id)
+### public static Item getItemById(int id)
 引数のIDで登録されているアイテムを返す。
 
-### static Item getItemFromBlock(Block block)
+### public static Item getItemFromBlock(Block block)
 引数のブロックに対応するアイテムを返す。
 
-### static void registerItems()
+### public static void registerItems()
 バニラアイテムをレジストリへ登録する。  
 Minecraft、及びMinecraftServer起動時に呼び出される。呼び出し不要。
 
-### Item setMaxStackSize(int maxStackSize)
+### public Item setMaxStackSize(int maxStackSize)
 このアイテムの最大スタック数を設定する。
 
 ### @SideOnly(Side.CLIENT) public int getSpriteNumber()
@@ -68,20 +68,20 @@ Minecraft、及びMinecraftServer起動時に呼び出される。呼び出し�
 このメソッドはrequiresMultipleRenderPasses()がfalseを返すときに呼ばれる。
 この実装ではgetIconFromDamage()を呼び出すが、オーバーライドすることでNBTに応じたIIconを返すことが出来る。
 
-### boolean onItemUse(ItemStack itemStack, EntityPlayer entityPlayer, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
+### public boolean onItemUse(ItemStack itemStack, EntityPlayer entityPlayer, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
 アイテムをブロックに対して右クリックした場合に呼ばれる。  
 何かを行った場合trueを返すことで、その後の処理を行わない。
 
-### float func_150893_a(ItemStack currentStack, Block block)
+### public float func_150893_a(ItemStack currentStack, Block block)
 利用されない。代わりにgetDigSpeed()を使う。
 引数のブロックに対する採掘速度を返す。
 
-### ItemStack onItemRightClick(ItemStack currentStack, World world, EntityPlayer entityPlayer)
+### public ItemStack onItemRightClick(ItemStack currentStack, World world, EntityPlayer entityPlayer)
 アイテムが右クリックされた場合に呼ばれる。  
 onItemUseFirst()やonItemUse()で何らかの処理が行われている場合は呼び出されない。  
 使用後のアイテムスタックを返す。
 
-### ItemStack onEaten(ItemStack currentStack, World world, EntityPlayer entityPlayer)
+### public ItemStack onEaten(ItemStack currentStack, World world, EntityPlayer entityPlayer)
 このアイテムが食べられるときに呼ばれる。  
 引数のプレイヤーがこのアイテムを食べたときの処理を行う。  
 ex. ItemFood
@@ -91,46 +91,46 @@ return: 使用後のアイテムスタック
 非推奨。代わりにgetItemStackLimit(ItemStack itemStack)を利用する。  
 このアイテムのスタック上限を返す。
 
-### int getMetadata(int metadata)
+### public int getMetadata(int metadata)
 引数のメタデータのアイテムスタックによりブロックが設置される際、そのブロックのメタデータを返す。
 
-### boolean getHasSubtypes()
+### public boolean getHasSubtypes()
 このアイテムが複数種のアイテムを表すならtrue。
 
-### Item setHasSubtypes(boolean hasSubtypes)
+### public Item setHasSubtypes(boolean hasSubtypes)
 このアイテムが複数種のアイテムを表すか設定する。　　
 このアイテム自身を返す。
 
-### int getMaxDamage()
+### public int getMaxDamage()
 非推奨。代わりにgetMaxDamage(ItemStack itemStack)を使う。  
 このアイテムの最大ダメージ値を返す。
 
-### Item setMaxDamage(int maxDamage)
+### public Item setMaxDamage(int maxDamage)
 非推奨。代わりにgetMaxDamage(ItemStack itemStack)をオーバーライドして最大ダメージ値を設定する。  
 このアイテムの最大ダメージ値を設定する。  
 このアイテム自身を返す。
 
-### boolean isDamageable()
+### public boolean isDamageable()
 このアイテムが耐久値を持つならtrue。  
 初期の実装ではsetMaxDamageで設定された値を参照するため、バニラの耐久設定を利用しないのであればgetMaxDamage(ItemStack itemStack)の実装に合わせてオーバーライドする。
 
-### boolean hitEntity(ItemStack itemStack, EntityLivingBase target, EntityLivingBase player)
+### public boolean hitEntity(ItemStack itemStack, EntityLivingBase target, EntityLivingBase player)
 targetに対して攻撃したときに呼び出される。  
 このアイテムでtargetに攻撃した際の処理を行う。  
 return: このアイテムでtargetに対し攻撃した場合に耐久値が減るならtrue。
 
-### boolean func_150897_b(Block block)
+### public boolean func_150897_b(Block block)
 このアイテムが引数のブロックの適正ツールか調べる。  
 特定のブロックに対して適正ツールを設定したいときに使う。ForgeのToolClassAPIのsetHarvestLevel()により適正ツール属性を付与することもできる。  
 return: このアイテムが引数のブロックの適正ツールならtrue
 
-### boolean itemInteractionForEntity(ItemStack itemStack, EntityPlayer entityPlayer, EntityLivingBase target)
+### public boolean itemInteractionForEntity(ItemStack itemStack, EntityPlayer entityPlayer, EntityLivingBase target)
 このアイテムを持ってtargetを右クリックした際に呼ばれる。  
 targetに対して何らかの干渉をする処理を行う。  
 ex. ItemDye, ItemShares
 return: 何らかの動作を行った場合true
 
-### Item setFull3D()
+### public Item setFull3D()
 bFull3Dをtrueに設定する。　　
 return: このアイテム
 

@@ -1,6 +1,6 @@
 # public enum ForgeDirection
-方向を表す列挙。
-
+方向を表す列挙。  
+Minecraftでは上下東西南北の全6方向を座標軸に沿って以下の列挙子ように定義している。
 
 ## 列挙子
 
