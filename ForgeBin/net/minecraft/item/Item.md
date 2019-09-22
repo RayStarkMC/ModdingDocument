@@ -236,7 +236,10 @@ ownerがツールチップを表示する際に呼び出される。実装側で
 このアイテムがエンチャントを施すことが出来る場合、trueを返す必要がある。  
 デフォルトの実装ではスタックサイズが1かつ耐久値を持つ場合にtrueを返す。
 
-### protected MovingObjectPosition getMovingObjectPositionFromPlayer(World world, EntityPlayer player, boolean p_77621_3_)
-TODO 第三引数が何者か調べる。
+### protected MovingObjectPosition getMovingObjectPositionFromPlayer(World world, EntityPlayer player, boolean includingStaticLiquid)
+playerの視点上のブロック座標を保持した[MovingObjectPosition]を返すヘルパメソッド。  
+この実装ではデフォルトのリーチである5m以内のブロックを捜査する。範囲内にブロックが存在しなかった場合、nullを返す。  
+return: 視点のMovingObjectPosition、無ければnull
 
 [ItemStack]:/ForgeBin/net/minecraft/item/ItemStack.md
+[MovingObjectPosition]:/ForgeBin/net/minecraft/util/MovingObjectPosition.md
