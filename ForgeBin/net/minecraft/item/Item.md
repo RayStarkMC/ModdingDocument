@@ -241,5 +241,26 @@ playerの視点上のブロック座標を保持した[MovingObjectPosition]を�
 この実装ではデフォルトのリーチである5m以内のブロックを捜査する。範囲内にブロックが存在しなかった場合、nullを返す。  
 return: 視点のMovingObjectPosition、無ければnull
 
+### public int getItemEnchantability()
+非推奨。代わりにgetItemEnchantability(ItemStack stack)をOverrideする。  
+このアイテムのエンチャント適正を返す。  
+この数値が高いほど祭壇で良質なエンチャントが付与される。
+0以下の値を返す場合、エンチャント不能になる。
+return: エンチャント適正
+
+### public boolean requiresMultipleRenderPasses()
+アイテムを複数レイヤーに渡って描画を必要とする場合にtureを返す。  
+このメソッドがfalseを返す場合、複数レイヤーによる描画関連のメソッドは無視される。  
+return: IIconを複数レイヤーに渡って描画する場合true
+
+### @SideOnly(Side.CLIENT) public IIcon getIconFromDamageForRenderPass(int damage, int pass)
+ダメージ値とレンダーパスから対応するIIConを返す。  
+デフォルトで[getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining)]から呼ばれる。  
+return: レイヤーpassでのIIcon
+
+### getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining)-
+
 [ItemStack]:/ForgeBin/net/minecraft/item/ItemStack.md
 [MovingObjectPosition]:/ForgeBin/net/minecraft/util/MovingObjectPosition.md
+
+[getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining)]:/ForgeBin/net/minecraft/item/Item.md#geticonitemstack-stack-int-renderpass-entityplayer-player-itemstack-usingitem-int-useremaining
