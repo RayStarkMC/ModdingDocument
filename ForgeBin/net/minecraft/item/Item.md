@@ -258,9 +258,20 @@ return: IIconを複数レイヤーに渡って描画する場合true
 デフォルトで[getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining)]から呼ばれる。  
 return: レイヤーpassでのIIcon
 
-### getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining)-
+### @SideOnly(Side.CLIENT) public void getSubItems(Item itemStack, CreativeTabs tab, List subItemList)
+このアイテムがクリエイティブタブに表示されるときに呼ばれる。  
+Overrideし、subItemListに表示するアイテムを追加する。
+
+### public Item setCreativeTab(CreativeTabs tabToDisplayOn)
+このアイテムを表示するクリエイティブタブを指定する。  
+同じアイテムを複数のクリエイティブタブに表示したい場合は[getCreativeTabs()]をOverrideする。  
+return: このアイテム
+
+### public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining)
 
 [ItemStack]:/ForgeBin/net/minecraft/item/ItemStack.md
 [MovingObjectPosition]:/ForgeBin/net/minecraft/util/MovingObjectPosition.md
 
-[getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining)]:/ForgeBin/net/minecraft/item/Item.md#geticonitemstack-stack-int-renderpass-entityplayer-player-itemstack-usingitem-int-useremaining
+
+[getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining)]:/ForgeBin/net/minecraft/item/Item.md#public-iicon-geticonitemstack-stack-int-renderpass-entityplayer-player-itemstack-usingitem-int-useremaining
+[getCreativeTabs()]:/ForgeBin/net/minecraft/item/Item.md##public-creativetabs-getcreativetabs
