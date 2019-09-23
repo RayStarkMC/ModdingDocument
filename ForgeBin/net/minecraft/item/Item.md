@@ -269,6 +269,8 @@ return: このアイテム
 
 ### public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining)
 
+### public CreativeTabs[] getCreativeTabs()
+
 [ItemStack]:/ForgeBin/net/minecraft/item/ItemStack.md
 [MovingObjectPosition]:/ForgeBin/net/minecraft/util/MovingObjectPosition.md
 
