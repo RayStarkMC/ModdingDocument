@@ -259,13 +259,58 @@ return: IIconを複数レイヤーに渡って描画する場合true
 return: レイヤーpassでのIIcon
 
 ### @SideOnly(Side.CLIENT) public void getSubItems(Item itemStack, CreativeTabs tab, List subItemList)
-このアイテムがクリエイティブタブに表示されるときに呼ばれる。  
+このアイテムが[CreativeTabs]に表示されるときに呼ばれる。  
 Overrideし、subItemListに表示するアイテムを追加する。
 
 ### public Item setCreativeTab(CreativeTabs tabToDisplayOn)
-このアイテムを表示するクリエイティブタブを指定する。  
-同じアイテムを複数のクリエイティブタブに表示したい場合は[getCreativeTabs()]をOverrideする。  
+このアイテムを表示する[CreativeTabs]を指定する。  
+同じアイテムを複数の[CreativeTabs]に表示したい場合は[getCreativeTabs()]をOverrideする。  
 return: このアイテム
+
+### @SideOnly(Side.CLIENT) public CreativeTabs getCreativeTab()
+このアイテムが表示される[CreativeTabs]を返す。  
+return: このアイテムが表示される[CreativeTabs]
+
+### public boolean canItemEditBlocks()
+このアイテムを使ってブロックを編集できる場合trueを返す。  
+初期値ture。Item自身以外からは利用されていないため、基本的にはOverride不要。
+return: このアイテムによるブロックを編集できる場合true
+
+### public boolean getIsRepairable(ItemStack tool, ItemStack matrial)
+materialがtoolの修繕素材であればtrueを返す。  
+アイテムの修理材料を独自に定義する場合このメソッドをOverrideする。  
+return materialがtoolの修繕素材であればtrue。
+
+### @SideOnly(Side.CLIENT) public void registerIcons(IIconRegister iconRegister)
+クライアントサイドの初期化時に一度だけ呼ばれ、[IIconRegister]を使いこのアイテムで使用する[IIcon]を登録する。  
+[IIcon]はアイテムのテクスチャを表しており、[getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining)]等のメソッドから取得できるようにしておく必要がある。デフォルトの実装では[itemString]から読み込んだテクスチャを[itemIcon]に登録する。
+
+### @Deprecated public Multimap getItemAttributeModifiers()
+非推奨。代わりに[getAttributeModifiers(ItemStack stack)]を利用する。
+このアイテムの[AttributeModifier]のMultimapを返す。
+return: このアイテムのAttributeModifierのMultimap
+
+### public Item setTextureName(String iconString)
+このアイテムのアイコン名を指定する。  
+アイコン名の形式は[IIconRegister]参照。
+return: このアイテム
+
+### @SideOnly(Side.CLIENT) protected String getIconString()
+このアイテムのアイコン名を返す。  
+アイコン名が存在する場合はアイコン名を、存在しない場合はnullテクスチャに対応する文字列を返す。  
+return: このアイテムのアイコン名
+
+### public Multimap getAttributeModifiers(ItemStack stack)
+このアイテムの[AttributeModifier]のMultimapを返す。
+return: このアイテムのAttributeModifierのMultimap
+
+
+### public boolean onDroppedByPlayer(ItemStack item, EntityPlayer player)
+プレイヤーがドロップキーを押してこのアイテムをドロップする直前にクライアントサイドで呼ばれる。  
+falseを返した場合アイテムをドロップしない。このメソッドがfalseを返すように実装されいても、プレイヤーがインベントリを開いてGUIからアイテムを投げた場合はドロップ出来るが、その場合このメソッドは呼ばれない。
+return: アイテムをドロップする場合true
+
+### public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
 
 ### public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining)
 
@@ -273,7 +318,14 @@ return: このアイテム
 
 [ItemStack]:/ForgeBin/net/minecraft/item/ItemStack.md
 [MovingObjectPosition]:/ForgeBin/net/minecraft/util/MovingObjectPosition.md
+[CreativeTabs]:/ForgeBin/net/minecraft/creaivetab/CreativeTabs.md
+[IIconRegister]:/ForgeBin/net/minecraft/client/renderer/texture/IIconRegister.md
+[IIcon]:/ForgeBin/net/minecraft/util/IIcon.md
+[AttributeModifier]:/ForgeBin/net/minecraft/entity/ai/attributes/AttributeModifier.md
 
+[itemString]:/ForgeBin/net/minecraft/item/Item.md#protected-string-iconstring
+[itemIcon]:/ForgeBin/net/minecraft/item/Item.md#sideonlysideclient-protected-iicon-itemicon
 
 [getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining)]:/ForgeBin/net/minecraft/item/Item.md#public-iicon-geticonitemstack-stack-int-renderpass-entityplayer-player-itemstack-usingitem-int-useremaining
-[getCreativeTabs()]:/ForgeBin/net/minecraft/item/Item.md##public-creativetabs-getcreativetabs
+[getCreativeTabs()]:/ForgeBin/net/minecraft/item/Item.md#public-creativetabs-getcreativetabs
+[getAttributeModifiers(ItemStack stack)]:/ForgeBin/net/minecraft/item/Item.md#public-multimap-getattributemodifiersitemstack-stack
