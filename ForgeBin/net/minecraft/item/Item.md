@@ -1,4 +1,4 @@
-# pulic class Item
+# public class Item
 ゲーム内における[ItemStack]の振る舞いを表現するクラス。  
 [ItemStack]が生成されるときに必ずItemクラスが参照され、[ItemStack]の各振る舞いはItemクラスのメソッドを参照する。Blockクラスに対してはこのクラスを継承したItemBlockクラスが対応している。
 
@@ -38,6 +38,11 @@ ex. iconString: "ateliermod:bandage"の時, assets/ateliermod/texture/items/band
 ### public final RegistryDelegate<Item> delegate
 このアイテムへの参照を保持する。
 
+### protected boolean canRepair;
+このアイテムが修繕可能であればtrueを返す。  
+[isRepairable()]からのみ参照される。  
+初期値true。
+
 
 ## メソッド
 ### public static int getIdFromItem(Item item)
@@ -65,7 +70,7 @@ Minecraft、及びMinecraftServer起動時に呼び出される。呼び出し�
 
 ### @SideOnly(Side.CLIENT) public IIcon getIconIndex(ItemStack itemStack)
 このスタックのアイコンを返す。  
-このメソッドはrequiresMultipleRenderPasses()がfalseを返すときに呼ばれる。
+このメソッドは[requiresMultipleRenderPasses()]がfalseを返すときに呼ばれる。
 この実装ではgetIconFromDamage()を呼び出すが、オーバーライドすることでNBTに応じたIIconを返すことが出来る。
 
 ### public boolean onItemUse(ItemStack itemStack, EntityPlayer entityPlayer, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
@@ -250,8 +255,8 @@ return: エンチャント適正
 
 ### public boolean requiresMultipleRenderPasses()
 アイテムを複数レイヤーに渡って描画を必要とする場合にtureを返す。  
-このメソッドがfalseを返す場合、複数レイヤーによる描画関連のメソッドは無視される。  
-return: IIconを複数レイヤーに渡って描画する場合true
+このメソッドがtrueを返す場合、[getRenderPasses(int metadata)]や[getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining)]等、複数の[IIcon]を利用するメソッドが呼ばれる。  
+return: 描画に複数の[IIcon]を利用する場合true
 
 ### @SideOnly(Side.CLIENT) public IIcon getIconFromDamageForRenderPass(int damage, int pass)
 ダメージ値とレンダーパスから対応するIIConを返す。  
@@ -311,10 +316,87 @@ falseを返した場合アイテムをドロップしない。このメソッド
 return: アイテムをドロップする場合true
 
 ### public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
+アイテムがブロックに対して右クリックされたとき、ブロックの処理が行われる前に呼ばれる。  
+tureを返す場合はその後の処理が行われない。
+return: その後の処理を行わない場合はtrue
+
+### public float getDigSpeed(ItemStack itemstack, Block block, int metadata)
+metadataを持つblockに対するこのアイテムの採掘速度を返す。  
+初期値は1.0f。  
+return: このアイテムの採掘速度
+
+### public boolean isRepairable()
+このアイテムがニコイチ修理可能であればtrueを返す。  
+このメソッドがtureを返す場合、作業台でニコイチ修理が出来るようになる。  
+return: このアイテムがニコイチ修理可能な場合true
+
+### public Item setNoRepair()
+このアイテムのニコイチ修理を無効化する。  
+return: このアイテム
+
+### public boolean onBlockStartBreak(ItemStack itemstack, int X, int Y, int Z, EntityPlayer player)
+このアイテムを用いてブロックを破壊し始める直前に呼ばれる。  
+return: アイテムの破壊を防ぐ場合trueを返す。
+
+### public void onUsingTick(ItemStack stack, EntityPlayer player, int count)
+entityPlayerがこのアイテムを使用している時、クライアントサイドで1tick毎に呼ばれる。
+
+### public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity)
+playerがentityに対してこのアイテムを持って攻撃する際にダメージを与える直前に呼ばれる。  
+このメソッドがtrueを返す場合、この処理の後の処理が中断される。  
+return: この後の処理を中断する場合true。
 
 ### public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining)
+このアイテムの[IIcon]を返す。  
+引数の違いによって細かく[IIcon]を変えることが出来るため、基本はこのメソッドをOverrideする。このメソッドを利用する場合、[requiresMultipleRenderPasses()]及び、[getRenderPasses(int metadata)]も併せてOverrideする。  
+return: このアイテムの[IIcon]
+
+### public int getRenderPasses(int metadata)
+このアイテムの描画に必要な[IIcon]の数を返す。  
+return: このアイテムの描画に必要な[IIcon]の数
+
+### public ItemStack getContainerItem(ItemStack itemStack)
+このアイテムの容器となるアイテムを返す。  
+容器はクラフト時に返却される。このメソッドをoverrideする場合は併せて[hasContainerItem(ItemStack stack)]がtrueを返すようにOverrideする必要がある。
+return: このアイテムの容器
+
+### public boolean hasContainerItem(ItemStack stack)
+このアイテムが容器を持つ場合trueを返す。  
+return: このアイテムが容器を持つ場合true。
+
+### public int getEntityLifespan(ItemStack itemStack, World world)
+このアイテムが[EntityItem]としてドロップされてから消失するまでのtick数を返す。  
+return: このアイテムの寿命
+
+### public boolean hasCustomEntity(ItemStack stack)
+このアイテムがドロップされたとき、[EntityItem]の代わりに独自の[Entity]をスポーンさせる場合trueを返す。  
+return: このアイテムが独自の[Entity]を持つならtrue
+
+### public Entity createEntity(World world, Entity location, ItemStack itemstack)
+このアイテムがドロップされたとき、[EntityItem]の代わりにスポーンする[Entity]を生成する。  
+このメソッドにより独自の[Entity]をスポーンさせる場合、[hasCustomEntity(ItemStack stack)]がtrueを返すようにOverrideする必要がある。  
+return: このアイテムがドロップされたときにスポーンする[Entity]
+
+### public boolean onEntityItemUpdate(EntityItem entityItem)
+このアイテムの[EntityItem]がワールド上にあるとき、1tick毎に呼ばれる。  
+このメソッドがtrueを返す場合、その後の処理が行われない。  
+return: このメソッド後の処理をしない場合true
 
 ### public CreativeTabs[] getCreativeTabs()
+このアイテムが表示される[CreativeTabs]の配列を返す。  
+[getSubItems(Item itemStack, CreativeTabs tab, List subItemList)]と合わせてOverrideすることで、1つのアイテムを複数の[CreativeTabs]に表示することが出来る。  
+return: このアイテムが表示される[CreativeTabs]の配列
+
+### public float getSmeltingExperience(ItemStack item)
+このアイテムが精錬された時の経験値の量を返す。  
+戻り値は0~1でなければならない。itemの数によって経験値量は増加する。  
+return: このアイテムが精錬されたときの経験値の量
+
+### public IIcon getIcon(ItemStack stack, int pass)
+stackとpassに対応するこのアイテムの[IICon]を返す。  
+return: このアイテムの[IIcon]
+
+### public WeightedRandomChestContent getChestGenBase(ChestGenHooks chest, Random rnd, WeightedRandomChestContent original)
 
 [ItemStack]:/ForgeBin/net/minecraft/item/ItemStack.md
 [MovingObjectPosition]:/ForgeBin/net/minecraft/util/MovingObjectPosition.md
@@ -322,6 +404,8 @@ return: アイテムをドロップする場合true
 [IIconRegister]:/ForgeBin/net/minecraft/client/renderer/texture/IIconRegister.md
 [IIcon]:/ForgeBin/net/minecraft/util/IIcon.md
 [AttributeModifier]:/ForgeBin/net/minecraft/entity/ai/attributes/AttributeModifier.md
+[EntityItem]:/ForgeBin/net/minecraft/entity/item/EntityItem.md
+[Entity]:/ForgeBin/net/minecraft/entity/Entity.md
 
 [itemString]:/ForgeBin/net/minecraft/item/Item.md#protected-string-iconstring
 [itemIcon]:/ForgeBin/net/minecraft/item/Item.md#sideonlysideclient-protected-iicon-itemicon
@@ -329,3 +413,9 @@ return: アイテムをドロップする場合true
 [getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining)]:/ForgeBin/net/minecraft/item/Item.md#public-iicon-geticonitemstack-stack-int-renderpass-entityplayer-player-itemstack-usingitem-int-useremaining
 [getCreativeTabs()]:/ForgeBin/net/minecraft/item/Item.md#public-creativetabs-getcreativetabs
 [getAttributeModifiers(ItemStack stack)]:/ForgeBin/net/minecraft/item/Item.md#public-multimap-getattributemodifiersitemstack-stack
+[isRepairable()]:/ForgeBin/net/minecraft/item/Item.md#public-boolean-isrepairable
+[requiresMultipleRenderPasses()]:/ForgeBin/net/minecraft/item/Item.md#public-boolean-requiresmultiplerenderpasses
+[getRenderPasses(int metadata)]:/ForgeBin/net/minecraft/item/Item.md#public-int-getrenderpassesint-metadata
+[hasContainerItem(ItemStack stack)]:/ForgeBin/net/minecraft/item/Item.md#public-boolean-hascontaineritemitemstack-stack
+[hasCustomEntity(ItemStack stack)]:/ForgeBin/net/minecraft/item/Item.md#public-entity-createentityworld-world-entity-location-itemstack-itemstack
+[getSubItems(Item itemStack, CreativeTabs tab, List subItemList)]:/ForgeBin/net/minecraft/item/Item.md#sideonlysideclient-public-void-getsubitemsitem-itemstack-creativetabs-tab-list-subitemlist
